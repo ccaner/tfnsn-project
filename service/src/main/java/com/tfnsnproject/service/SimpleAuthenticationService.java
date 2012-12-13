@@ -2,6 +2,7 @@ package com.tfnsnproject.service;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.tfnsnproject.dao.UserDao;
 import com.tfnsnproject.to.User;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -79,6 +80,8 @@ public class SimpleAuthenticationService implements AuthenticationService {
                 }
             });
         } catch (ExecutionException e) {
+            return null;
+        } catch (UncheckedExecutionException e) {
             return null;
         }
     }

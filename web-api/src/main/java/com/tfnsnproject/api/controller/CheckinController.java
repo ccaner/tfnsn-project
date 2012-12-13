@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-public class CheckinController {
+public class CheckinController extends BaseController {
 
     @Autowired
     private AuthenticationService authenticationService;
