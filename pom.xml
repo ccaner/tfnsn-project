@@ -27,6 +27,7 @@
         <guava.version>12.0</guava.version>
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
         <commons-io.version>2.0.1</commons-io.version>
+        <commons-codec>1.7</commons-codec>
         <mysql.version>5.1.9</mysql.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <aws-java-sdk.version>1.3.26</aws-java-sdk.version>
@@ -109,6 +110,11 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>

@@ -6,6 +6,8 @@
 *.ear
 
 *.iml
+*.iws
+*.ipr
 out/*
 */target/*
 

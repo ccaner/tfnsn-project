@@ -17,12 +17,20 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
+    <bean id="userDao" class="com.tfnsnproject.dao.UserDaoImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="checkinDao" class="com.tfnsnproject.dao.CheckinDaoImpl">
-        <property name="dataSource" ref="dataSource"/>
+        <constructor-arg name="dataSource" ref="dataSource"/>
     </bean>
 
     <bean id="checkinService" class="com.tfnsnproject.service.CheckinServiceImpl">
         <property name="checkinDao" ref="checkinDao"/>
+    </bean>
+
+    <bean id="authencticationService" class="com.tfnsnproject.service.SimpleAuthenticationService" init-method="init">
+        <property name="userDao" ref="userDao"/>
     </bean>
 
 </beans>

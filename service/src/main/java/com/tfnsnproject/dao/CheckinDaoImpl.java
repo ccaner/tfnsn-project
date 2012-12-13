@@ -30,7 +30,7 @@ public class CheckinDaoImpl implements CheckinDao {
     private SimpleJdbcInsert insertCheckin;
     private NamedParameterJdbcTemplate jdbcTemplate;
 
-    public void setDataSource(DataSource dataSource) {
+    public CheckinDaoImpl(DataSource dataSource) {
         this.insertCheckin =
                 new SimpleJdbcInsert(dataSource)
                         .withTableName("latlong")
