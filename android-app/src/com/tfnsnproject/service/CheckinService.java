@@ -17,7 +17,7 @@ public class CheckinService extends IntentService {
 
     public static final String CHECKIN = "com.tfnsnproject.intent.CHECKIN";
 
-    ApiClient apiClient = new ApiClient();
+    ApiClient apiClient = ApiClient.getInstance();
 
     public CheckinService() {
         super("CheckinService");
@@ -28,7 +28,7 @@ public class CheckinService extends IntentService {
         MediaCheckin checkin = (MediaCheckin) intent.getParcelableExtra(CHECKIN);
         try {
             setNetworkIndicator(true);
-            apiClient.checkinWithMedia(checkin.getMessage(),
+            apiClient.checkinWithMedia(checkin.getAuthToken(), checkin.getMessage(),
                     getContentResolver().openInputStream(checkin.getMedia()), 33d, 44d);
         } catch (FileNotFoundException e) {
         } finally {

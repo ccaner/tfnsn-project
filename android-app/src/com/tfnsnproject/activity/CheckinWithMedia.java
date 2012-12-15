@@ -1,12 +1,12 @@
 package com.tfnsnproject.activity;
 
+import android.accounts.*;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,26 +16,19 @@ import android.widget.Toast;
 import com.tfnsnproject.R;
 import com.tfnsnproject.service.CheckinService;
 import com.tfnsnproject.to.MediaCheckin;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.InputStreamBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.IOException;
+import java.net.Authenticator;
+
+import static com.tfnsnproject.authenticator.Authenticator.ACCOUNT_TYPE;
+import static com.tfnsnproject.authenticator.Authenticator.AUTHTOKEN_TYPE;
 
 public class CheckinWithMedia extends Activity {
 
     Uri imageUri;
     EditText messageText;
+
+    String authToken;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +49,27 @@ public class CheckinWithMedia extends Activity {
 
         this.messageText = (EditText) findViewById(R.id.edit_message);
         setContentView(R.layout.checkin_with_media);
+
+        AccountManager accountManager = AccountManager.get(this);
+        accountManager.getAuthTokenByFeatures(ACCOUNT_TYPE, AUTHTOKEN_TYPE, null, this, null, null, new AccountManagerCallback<Bundle>() {
+            public void run(AccountManagerFuture<Bundle> bundleAccountManagerFuture) {
+                Bundle result = null;
+                try {
+                    result = bundleAccountManagerFuture.getResult();
+                    authToken = result.getString(AccountManager.KEY_AUTHTOKEN);
+                } catch (Exception e) {
+                    finish();
+                }
+                System.out.println("result = " + result);
+            }
+        }, null);
+
     }
 
     public void checkin(View view) {
+        if (authToken == null) {
+            return;
+        }
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
 
@@ -70,10 +81,11 @@ public class CheckinWithMedia extends Activity {
             button.setEnabled(false);
 
             MediaCheckin checkin = new MediaCheckin();
+            checkin.setAuthToken(authToken);
             checkin.setMedia(imageUri);
             checkin.setMessage(((EditText) findViewById(R.id.edit_message)).getText().toString());
 
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(findViewById(R.id.edit_message).getWindowToken(), 0);
 
             Toast.makeText(getApplicationContext(), getString(R.string.sending), Toast.LENGTH_SHORT).show();

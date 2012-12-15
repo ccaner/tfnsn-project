@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 public class MediaCheckin implements Parcelable {
 
+    private String authToken;
+
     private String message;
 
     private Uri media;
@@ -13,6 +15,14 @@ public class MediaCheckin implements Parcelable {
     private Double lat, longg;
 
     public MediaCheckin() {
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 
     public String getMessage() {
@@ -52,6 +62,7 @@ public class MediaCheckin implements Parcelable {
     }
 
     public void writeToParcel(Parcel out, int flags) {
+        out.writeString(authToken);
         out.writeString(message);
         out.writeParcelable(media, 0);
         out.writeDouble(lat == null ? 0 : lat);
@@ -70,6 +81,7 @@ public class MediaCheckin implements Parcelable {
      };
 
      private MediaCheckin(Parcel in) {
+         authToken = in.readString();
          message = in.readString();
          media = in.readParcelable(getClass().getClassLoader());
          lat = in.readDouble();
