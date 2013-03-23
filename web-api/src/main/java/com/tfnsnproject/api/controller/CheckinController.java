@@ -1,17 +1,16 @@
 package com.tfnsnproject.api.controller;
 
-import java.io.IOException;
-import java.util.Date;
-
 import com.tfnsnproject.service.AuthenticationService;
-import com.tfnsnproject.to.Checkin;
 import com.tfnsnproject.service.CheckinService;
+import com.tfnsnproject.to.Checkin;
 import com.tfnsnproject.to.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Date;
 
 @Controller
 public class CheckinController extends BaseController {

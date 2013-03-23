@@ -14,13 +14,6 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Created by IntelliJ IDEA.
- * User: caner
- * Date: 11/20/12
- * Time: 10:06 PM
- * To change this template use File | Settings | File Templates.
- */
 public class PhotoUtil {
 
     private static final String FULLSIZE_SUFFIX = ".jpg";
@@ -62,7 +55,7 @@ public class PhotoUtil {
     }
 
     private static String storeThumbnail(Photo photo, byte[] photoData) throws IOException {
-        byte [] thumbnail = scalePhoto(THUMBNAIL_LONG_EDGE, photoData);
+        byte[] thumbnail = scalePhoto(THUMBNAIL_LONG_EDGE, photoData);
         S3StorageObject obj = getStorageObject(thumbnail, photo.getCheckinId() + THUMB_SUFFIX);
         S3StorageManager mgr = new S3StorageManager();
         mgr.storePublicRead(obj, true);
@@ -77,7 +70,7 @@ public class PhotoUtil {
         return obj;
     }
 
-    private static byte[] scalePhoto(int longEdgeSize, byte[] photoData) throws IOException {
+    public static byte[] scalePhoto(int longEdgeSize, byte[] photoData) throws IOException {
 
         ByteArrayInputStream dataStream = new ByteArrayInputStream(photoData);
         ImageInputStream iis = ImageIO.createImageInputStream(dataStream);

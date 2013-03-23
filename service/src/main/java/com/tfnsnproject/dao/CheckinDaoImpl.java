@@ -42,6 +42,7 @@ public class CheckinDaoImpl implements CheckinDao {
     public void create(Checkin checkin) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("userid", checkin.getAccountId());
+        parameters.put("source", "API");
         parameters.put("created", checkin.getCheckinTime());
         parameters.put("pos", checkin.getLatitude() + "," + checkin.getLongitude());
         parameters.put("comment", checkin.getComment());

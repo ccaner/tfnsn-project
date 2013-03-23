@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ApiClient {
 
-    private final String serverUrl = "http://72.44.39.36:8080";
+    private final String serverUrl = "http://api.tfnsn.com";
 
     private final HttpClient httpclient = new DefaultHttpClient();
 
