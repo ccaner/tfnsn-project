@@ -14,6 +14,10 @@ public class MediaCheckin implements Parcelable {
 
     private Double lat, longg;
 
+    private String placeName;
+
+    private String placeId;
+
     public MediaCheckin() {
     }
 
@@ -49,12 +53,28 @@ public class MediaCheckin implements Parcelable {
         this.lat = lat;
     }
 
-    public Double getLongg() {
+    public Double getLong() {
         return longg;
     }
 
-    public void setLongg(Double longg) {
+    public void setLong(Double longg) {
         this.longg = longg;
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 
     public int describeContents() {
@@ -64,6 +84,8 @@ public class MediaCheckin implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(authToken);
         out.writeString(message);
+        out.writeString(placeName);
+        out.writeString(placeId);
         out.writeParcelable(media, 0);
         out.writeDouble(lat == null ? 0 : lat);
         out.writeDouble(longg == null ? 0 : longg);
@@ -83,6 +105,8 @@ public class MediaCheckin implements Parcelable {
      private MediaCheckin(Parcel in) {
          authToken = in.readString();
          message = in.readString();
+         placeName = in.readString();
+         placeId = in.readString();
          media = in.readParcelable(getClass().getClassLoader());
          lat = in.readDouble();
          longg = in.readDouble();

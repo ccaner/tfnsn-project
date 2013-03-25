@@ -16,6 +16,8 @@ public class Checkin {
 
     private Date checkinTime;
 
+    private String placeName;
+
     public Long getId() {
         return id;
     }
@@ -62,5 +64,13 @@ public class Checkin {
 
     public void setCheckinTime(Date checkinTime) {
         this.checkinTime = checkinTime;
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 }

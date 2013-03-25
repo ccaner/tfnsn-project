@@ -48,7 +48,7 @@ public class CheckinDaoImpl implements CheckinDao {
         parameters.put("comment", checkin.getComment());
 //        parameters.put("mapic", checkin.getLastName());
 //        parameters.put("geocode", checkin.getLastName());
-//        parameters.put("p_name", checkin.getLastName());
+        parameters.put("p_name", checkin.getPlaceName());
 //        parameters.put("upload", checkin.getLastName());
 //        parameters.put("upload_small", checkin.getLastName());
 //        parameters.put("vid", checkin.getLastName());

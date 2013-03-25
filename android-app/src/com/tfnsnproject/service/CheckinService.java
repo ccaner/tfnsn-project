@@ -6,8 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
-import com.tfnsnproject.R;
 import com.tfnsnproject.to.MediaCheckin;
 import com.tfnsnproject.util.ApiClient;
 
@@ -29,7 +27,8 @@ public class CheckinService extends IntentService {
         try {
             setNetworkIndicator(true);
             apiClient.checkinWithMedia(checkin.getAuthToken(), checkin.getMessage(),
-                    getContentResolver().openInputStream(checkin.getMedia()), 33d, 44d);
+                    getContentResolver().openInputStream(checkin.getMedia()), checkin.getLat(), checkin.getLong(),
+                    checkin.getPlaceName(), checkin.getPlaceId());
         } catch (FileNotFoundException e) {
         } finally {
             setNetworkIndicator(false);

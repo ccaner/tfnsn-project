@@ -1,6 +1,8 @@
 package com.tfnsnproject.activity;
 
-import android.accounts.*;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,23 +14,27 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.tfnsnproject.R;
 import com.tfnsnproject.service.CheckinService;
 import com.tfnsnproject.to.MediaCheckin;
-
-import java.io.IOException;
-import java.net.Authenticator;
+import com.tfnsnproject.to.PlaceInfo;
 
 import static com.tfnsnproject.authenticator.Authenticator.ACCOUNT_TYPE;
 import static com.tfnsnproject.authenticator.Authenticator.AUTHTOKEN_TYPE;
 
 public class CheckinWithMedia extends Activity {
 
-    Uri imageUri;
-    EditText messageText;
+    private static final int PICK_PLACE_REQUEST = 1;
 
-    String authToken;
+    private Uri imageUri;
+    private PlaceInfo placeInfo;
+
+    private EditText messageText;
+    private TextView placeName;
+
+    private String authToken;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,8 +53,9 @@ public class CheckinWithMedia extends Activity {
             }
         }
 
-        this.messageText = (EditText) findViewById(R.id.edit_message);
         setContentView(R.layout.checkin_with_media);
+        this.placeName = (TextView) findViewById(R.id.place_name);
+        this.messageText = (EditText) findViewById(R.id.edit_message);
 
         AccountManager accountManager = AccountManager.get(this);
         accountManager.getAuthTokenByFeatures(ACCOUNT_TYPE, AUTHTOKEN_TYPE, null, this, null, null, new AccountManagerCallback<Bundle>() {
@@ -84,6 +91,15 @@ public class CheckinWithMedia extends Activity {
             checkin.setAuthToken(authToken);
             checkin.setMedia(imageUri);
             checkin.setMessage(((EditText) findViewById(R.id.edit_message)).getText().toString());
+            if (placeInfo != null) {
+                checkin.setLat(placeInfo.getLat());
+                checkin.setLong(placeInfo.getLong());
+                checkin.setPlaceName(placeInfo.getName());
+                checkin.setPlaceId(placeInfo.getId());
+            } else {
+                checkin.setLat(33d);
+                checkin.setLong(44d);
+            }
 
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(findViewById(R.id.edit_message).getWindowToken(), 0);
@@ -100,5 +116,19 @@ public class CheckinWithMedia extends Activity {
 
     }
 
+    public void addPlace(View view) {
+        Intent intent = new Intent(this, SearchPlace.class);
+        startActivityForResult(intent, PICK_PLACE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // If the request went well (OK) and the request was PICK_CONTACT_REQUEST
+        if (resultCode == Activity.RESULT_OK && requestCode == PICK_PLACE_REQUEST) {
+            placeInfo = data.getParcelableExtra(SearchPlace.PLACE);
+            placeName.setText(placeInfo.getName());
+
+        }
+    }
 
 }

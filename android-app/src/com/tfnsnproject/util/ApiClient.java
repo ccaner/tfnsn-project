@@ -1,6 +1,5 @@
 package com.tfnsnproject.util;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -34,7 +33,8 @@ public class ApiClient {
         return INSTANCE;
     }
 
-    public void checkinWithMedia(String authToken, String message, InputStream media, Double longg, Double lat) {
+    public void checkinWithMedia(String authToken, String message, InputStream media, Double longg, Double lat,
+                                 String placeName, String placeId) {
         try {
             HttpPost httppost = new HttpPost(serverUrl + "/checkin-with-media");
             httppost.addHeader("Authorization", authToken);
@@ -45,6 +45,8 @@ public class ApiClient {
             reqEntity.addPart("message", new StringBody(message));
             reqEntity.addPart("long", new StringBody(longg.toString()));
             reqEntity.addPart("lat", new StringBody(lat.toString()));
+            reqEntity.addPart("placename", new StringBody(placeName));
+            reqEntity.addPart("placeid", new StringBody(placeId));
 
             httppost.setEntity(reqEntity);
 
